@@ -25,6 +25,7 @@ public class GUIMain extends JFrame {
 	private JButton startBtn;
 	private JCheckBox cbNumbers;
 	private JCheckBox cbHashes;
+	private JCheckBox cbFlatten;
 
 	public GUIMain() {
 		try {
@@ -82,32 +83,18 @@ public class GUIMain extends JFrame {
 		gbc_button.gridx = 2;
 		gbc_button.gridy = 0;
 		panel_1.add(button, gbc_button);
-		
-		cbHashes = new JCheckBox("Использовать хеши в качестве имен");
-		cbHashes.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				cbNumbers.setSelected(false);
-			}
-		});
-		GridBagConstraints gbc_cbHashes = new GridBagConstraints();
-		gbc_cbHashes.anchor = GridBagConstraints.WEST;
-		gbc_cbHashes.gridwidth = 3;
-		gbc_cbHashes.insets = new Insets(0, 0, 5, 0);
-		gbc_cbHashes.gridx = 0;
-		gbc_cbHashes.gridy = 3;
-		panel_1.add(cbHashes, gbc_cbHashes);
-		
-		JPanel dropPanel = new DnDPanel(dirField);
-		GridBagConstraints gbc_dropPanel = new GridBagConstraints();
-		gbc_dropPanel.insets = new Insets(10, 0, 10, 0);
-		gbc_dropPanel.gridwidth = 3;
-		gbc_dropPanel.fill = GridBagConstraints.BOTH;
-		gbc_dropPanel.gridx = 0;
-		gbc_dropPanel.gridy = 1;
-		panel_1.add(dropPanel, gbc_dropPanel);
-		dropPanel.setLayout(new BorderLayout(0, 0));
-		
-		cbNumbers = new JCheckBox("Использовать цифры в качестве имен");
+
+        JPanel dropPanel = new DnDPanel(dirField);
+        GridBagConstraints gbc_dropPanel = new GridBagConstraints();
+        gbc_dropPanel.insets = new Insets(10, 0, 10, 0);
+        gbc_dropPanel.gridwidth = 3;
+        gbc_dropPanel.fill = GridBagConstraints.BOTH;
+        gbc_dropPanel.gridx = 0;
+        gbc_dropPanel.gridy = 1;
+        panel_1.add(dropPanel, gbc_dropPanel);
+        dropPanel.setLayout(new BorderLayout(0, 0));
+
+        cbNumbers = new JCheckBox("Использовать цифры в качестве имен");
 		cbNumbers.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				cbHashes.setSelected(false);
@@ -119,8 +106,31 @@ public class GUIMain extends JFrame {
 		gbc_cbNumbers.gridx = 0;
 		gbc_cbNumbers.gridy = 2;
 		panel_1.add(cbNumbers, gbc_cbNumbers);
-		
-		JPanel panel_2 = new JPanel();
+
+        cbHashes = new JCheckBox("Использовать хеши в качестве имен");
+        cbHashes.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                cbNumbers.setSelected(false);
+            }
+        });
+        GridBagConstraints gbc_cbHashes = new GridBagConstraints();
+        gbc_cbHashes.anchor = GridBagConstraints.WEST;
+        gbc_cbHashes.gridwidth = 3;
+        gbc_cbHashes.gridx = 0;
+        gbc_cbHashes.gridy = 3;
+        panel_1.add(cbHashes, gbc_cbHashes);
+
+        cbFlatten = new JCheckBox("Уплощать файловую структуру");
+        cbFlatten.setSelected(true);
+        GridBagConstraints gbc_cbFlatten = new GridBagConstraints();
+        gbc_cbFlatten.anchor = GridBagConstraints.WEST;
+        gbc_cbFlatten.gridwidth = 3;
+        gbc_cbFlatten.insets = new Insets(0, 0, 5, 0);
+        gbc_cbFlatten.gridx = 0;
+        gbc_cbFlatten.gridy = 4;
+        panel_1.add(cbFlatten, gbc_cbFlatten);
+
+        JPanel panel_2 = new JPanel();
 		panel.add(panel_2, BorderLayout.SOUTH);
 		
 		startBtn = new JButton("Старт!");
@@ -187,6 +197,7 @@ public class GUIMain extends JFrame {
 				
 				rcd.setUseNumbers(cbNumbers.isSelected());
 				rcd.setUseHashes(cbHashes.isSelected());
+				rcd.setFlatten(cbFlatten.isSelected());
 				
 				for (File f: fList) {
 					if (!f.isDirectory()) continue;

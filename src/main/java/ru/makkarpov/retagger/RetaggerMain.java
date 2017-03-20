@@ -38,7 +38,11 @@ public class RetaggerMain implements EncodingListener {
 				rcd.setUseNumbers(true);
 				continue;
 			}
-			
+
+			if (s.equals("--no-flatten")) {
+				rcd.setFlatten(false);
+			}
+
 			File f = new File(s);
 			if (!f.exists() || !f.isDirectory()) {
 				System.out.println(s + ": omitting, does not exists or not a directory.");

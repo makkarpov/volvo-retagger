@@ -34,7 +34,11 @@ public class Recoder {
 		useHashes = use;
 	}
 
-	private String hash(String s) {
+    public void setFlatten(boolean flatten) {
+        this.flatten = flatten;
+    }
+
+    private String hash(String s) {
 		try {
 			String h = new BigInteger(MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8"))).toString(16).toUpperCase() + "0000000";
 			return h.substring(1, 9);
@@ -44,28 +48,37 @@ public class Recoder {
 		}
 	}
 	
-	public void parseDirectory(File dir, File out, EncodingListener listener) throws Exception {
-	    if (!dir.isDirectory()) {
-	        System.out.println("Skipping " + dir + ": not a directory");
+	public void parseDirectory(File scanIn, File scanOut, EncodingListener listener) throws Exception {
+	    if (!scanIn.isDirectory()) {
+	        System.out.println("Skipping " + scanIn + ": not a directory");
         }
 
-		File[] list = dir.listFiles();
-		for (File f: list) {
-		    if (!f.isDirectory()) {
-		        System.out.println("Skipping " + f + ": not a directory");
+		File[] list = scanIn.listFiles();
+		for (File inDir: list) {
+		    if (!inDir.isDirectory()) {
+		        System.out.println("Skipping " + inDir + ": not a directory");
             }
 
-			File[] list2 = f.listFiles();
-			for (File f1: list2) {
-				if (!f1.getName().endsWith(".mp3")) continue;
+            File outDir = scanOut;
+            if (!flatten) {
+                outDir = new File(scanOut, names.replace(inDir.getName()));
+            }
+
+            if (!outDir.exists() && !outDir.mkdirs())
+                throw new IOException("Failed to make directory: " + outDir);
+
+			File[] list2 = inDir.listFiles();
+			for (File inFile: list2) {
+				if (!inFile.getName().endsWith(".mp3")) continue;
 
 				String newName;
-				if (useHashes) newName = hash(f.getName() + f1.getName()) + ".mp3";
+				if (useHashes) newName = hash(inDir.getName() + inFile.getName()) + ".mp3";
 				else if (useNumbers) newName = String.format("%04d.mp3", curFile++);
-				else newName = names.replace(f.getName() + " - " + f1.getName()) + ".mp3";
+				else if (!flatten) newName = names.replace(inFile.getName());
+				else newName = names.replace(inDir.getName() + " - " + inFile.getName());
 
-				File target = new File(out, newName);
-				parseFile(f1, f.getName(), target, listener);
+				File outFile = new File(outDir, newName);
+				parseFile(inFile, inDir.getName(), outFile, listener);
 			}
 		}
 	}
