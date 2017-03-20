@@ -14,6 +14,7 @@ import java.security.MessageDigest;
 public class Recoder {
 	private boolean useNumbers = false;
 	private boolean useHashes = false;
+	private boolean flatten = true;
 	private int curFile = 1;
 	
 	private ReplaceFile names = new ReplaceFile();
@@ -32,7 +33,7 @@ public class Recoder {
 	public void setUseHashes(boolean use) {
 		useHashes = use;
 	}
-	
+
 	private String hash(String s) {
 		try {
 			String h = new BigInteger(MessageDigest.getInstance("MD5").digest(s.getBytes("UTF-8"))).toString(16).toUpperCase() + "0000000";
