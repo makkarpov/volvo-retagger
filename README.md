@@ -3,6 +3,8 @@ volvo-retagger
 
 Конвертер ID3-тегов в кодировку ISO-8859-5 для правильного отображения в автомобилях Volvo.
 
+![image](https://cloud.githubusercontent.com/assets/1329592/24109402/942013c8-0da1-11e7-96f2-572a0fe9615f.png)
+
 Скачать
 -------
 
@@ -56,3 +58,4 @@ root/ <- подается в качестве входной
 Если же нет — вам необходимо создать **Issue**, в котором описать ошибку/желаемую функциональность.
 
 Так же сообщения можно направлять в ЛС на [clubvolvo.ru](http://clubvolvo.ru/member.php?u=37892) или на [me@makakrpov.ru](mailto:me@makkarpov.ru).
+[Тема на clubvolvo.ru](http://clubvolvo.ru/showthread.php?t=33232).
